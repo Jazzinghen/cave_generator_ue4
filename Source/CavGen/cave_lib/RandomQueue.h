@@ -10,16 +10,16 @@
  *
  */
 template <typename T>
-class CAVGEN_API RandomList
+class CAVGEN_API RandomQueue
 {
 public:
-	RandomList()
+	RandomQueue()
 	{
 		std::random_device rd;
 		generator = std::mt19937(rd());
 	};
 
-	~RandomList();
+	~RandomQueue();
 
 	void push(const T& next)
 	{
