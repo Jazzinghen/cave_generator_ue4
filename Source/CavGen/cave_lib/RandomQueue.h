@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <iterator>
 #include <random>
 #include <utility>
 #include <vector>
@@ -35,6 +36,11 @@ public:
 		data_.pop_back();
 
 		return random_value;
+	}
+
+	bool empty() const
+	{
+		return data_.empty();
 	}
 
 private:
