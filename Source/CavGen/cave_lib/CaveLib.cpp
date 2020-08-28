@@ -3,7 +3,7 @@
 #include "CaveLib.h"
 
 #include "Math/UnrealMathUtility.h"
-#include "RandomQueue.h"
+#include "RandomWallQueue.h"
 
 #include <algorithm>
 #include <cstdint>
@@ -22,7 +22,7 @@ TArray<TArray<bool>> UCaveLib::GenerateCave(uint16 height, uint16 width)
 		result.Push(wall_row);
 	}
 
-	RandomQueue<std::pair<std::uint32_t, std::uint32_t>> exploration_front;
+	RandomWallQueue exploration_front;
 
 	// Pick a starting location at random to make it part of the labyrinth
 	const uint32 starting_row = FMath::RandRange(0, height);
@@ -37,20 +37,20 @@ TArray<TArray<bool>> UCaveLib::GenerateCave(uint16 height, uint16 width)
 	// Add all the walls that are adjacent to the chosen location
 	if (starting_row > 0)
 	{
-		exploration_front.push(std::make_pair(padded_row - 1, starting_col));
+		exploration_front.push(padded_row - 1, starting_col);
 	}
 	if (starting_row < (height - 1ul))
 	{
-		exploration_front.push(std::make_pair(padded_row + 1, starting_col));
+		exploration_front.push(padded_row + 1, starting_col);
 	}
 
 	if (starting_col > 0)
 	{
-		exploration_front.push(std::make_pair(padded_row, starting_col - 1));
+		exploration_front.push(padded_row, starting_col - 1);
 	}
 	if (starting_col < (width - 1ul))
 	{
-		exploration_front.push(std::make_pair(padded_row, starting_col + 1));
+		exploration_front.push(padded_row, starting_col + 1);
 	}
 
 	// Time for the loop!
