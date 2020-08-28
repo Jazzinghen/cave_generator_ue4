@@ -22,7 +22,7 @@ TArray<TArray<bool>> UCaveLib::GenerateCave(uint16 height, uint16 width)
 		result.Push(wall_row);
 	}
 
-	RandomWallQueue exploration_front;
+	URandomWallQueue exploration_front;
 
 	// Pick a starting location at random to make it part of the labyrinth
 	const uint32 starting_row = FMath::RandRange(0, height);

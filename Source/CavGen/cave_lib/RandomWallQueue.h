@@ -2,25 +2,27 @@
 
 #pragma once
 
+#include "Math/UnrealMathUtility.h"
+
 #include <cstdint>
 #include <iterator>
 #include <random>
 #include <utility>
 #include <vector>
 
+#include "RandomWallQueue.generated.h"
+
 /**
  *
  */
-class CAVGEN_API RandomWallQueue
+UCLASS()
+class CAVGEN_API URandomWallQueue : public UObject
 {
+	GENERATED_BODY()
 public:
-	RandomWallQueue()
-	{
-		std::random_device rd;
-		generator_ = std::mt19937(rd());
-	};
+	URandomWallQueue() = default;
 
-	~RandomWallQueue();
+	~URandomWallQueue() = default;
 
 	void push(std::uint32_t row, std::uint32_t col)
 	{
@@ -29,8 +31,7 @@ public:
 
 	std::pair<std::uint32_t, std::uint32_t> pop()
 	{
-		std::uniform_int_distribution<> distribution(0, data_.size() - 1);
-		const size_t idx = distribution(generator_);
+		const size_t idx = FMath::RandRange(0, data_.size() - 1);
 		std::swap(data_[idx], data_.back());
 		const auto random_value = data_.back();
 		data_.pop_back();
@@ -44,7 +45,5 @@ public:
 	}
 
 private:
-	std::mt19937 generator_;
-	// Underlying datastructure
 	std::vector<std::pair<std::uint32_t, std::uint32_t>> data_;
 };
