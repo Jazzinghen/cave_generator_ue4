@@ -17,14 +17,14 @@ public:
 	RandomQueue()
 	{
 		std::random_device rd;
-		generator = std::mt19937(rd());
+		generator_ = std::mt19937(rd());
 	};
 
 	~RandomQueue();
 
 	void push(const T& next)
 	{
-		data.push_back(next);
+		data_.push_back(next);
 	}
 
 	T pop()
