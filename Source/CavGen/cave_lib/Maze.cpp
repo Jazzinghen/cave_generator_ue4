@@ -37,23 +37,7 @@ void UMaze::Generate(uint16 height, uint16 width)
 	data_[padded_row][padded_col] = true;
 
 	// Add all the walls that are adjacent to the chosen location
-	if (starting_row > 0)
-	{
-		exploration_front.push(padded_row - 1, starting_col);
-	}
-	if (starting_row < (height - 1ul))
-	{
-		exploration_front.push(padded_row + 1, starting_col);
-	}
-
-	if (starting_col > 0)
-	{
-		exploration_front.push(padded_row, starting_col - 1);
-	}
-	if (starting_col < (width - 1ul))
-	{
-		exploration_front.push(padded_row, starting_col + 1);
-	}
+	AddWalls(std::make_pair(padded_row, padded_col), exploration_front);
 
 	// Time for the loop!
 	while (!exploration_front.empty())
@@ -72,21 +56,65 @@ void UMaze::Generate(uint16 height, uint16 width)
 			const bool cell_below = data_[next_wall.first + 1][next_wall.second];
 			const bool cell_above = data_[next_wall.first - 1][next_wall.second];
 
-			// if we have a cell below, but not above it means we are coming
-			// from there.
-			if (cell_below && !cell_above)
+			// if we have one maze cell and one wall...
+			if (cell_below != cell_above)
 			{
 				// set the wall as a connection
 				data_[next_wall.first][next_wall.second] = true;
+
+				// then, if the maze cell is the one above, then the next maze
+				// cell will be the one below and the opposite
+				if (cell_above)
+				{
+					++next_cell.first;
+				}
+				else
+				{
+					--next_cell.first;
+				}
 			}
 		}
 		else
 		{
 			// Otherwise it's an horizontal wall
+			const bool cell_right = data_[next_wall.first][next_wall.second + 1];
+			const bool cell_left = data_[next_wall.first][next_wall.second - 1];
+
+			if (cell_right != cell_left)
+			{
+				data_[next_wall.first][next_wall.second] = true;
+
+				if (cell_left)
+				{
+					++next_cell.second;
+				}
+				else
+				{
+					--next_cell.second;
+				}
+			}
 		}
+		data_[next_cell.first][next_cell.second] = true;
+		AddWalls(next_cell, exploration_front);
 	}
 }
 
-void UMaze::AddWalls(const std::pair<std::uint32_t, std::uint32_t>& cell, URandomWallQueue& front)
+void UMaze::AddWalls(const std::pair<std::uint32_t, std::uint32_t>& cell, URandomWallQueue& front) const
 {
+	if (cell.first >= 3)
+	{
+		front.push(cell.first - 1, cell.second);
+	}
+	if (cell.first <= (height_ - 4ul))
+	{
+		front.push(cell.first + 1, cell.second);
+	}
+	if (cell.second >= 3)
+	{
+		front.push(cell.first, cell.second - 1);
+	}
+	if (cell.second <= (width_ - 4ul))
+	{
+		front.push(cell.first, cell.second + 1);
+	}
 }

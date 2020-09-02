@@ -37,4 +37,4 @@ private:
 	uint32 padded_width_;
 
 	void AddWalls(const std::pair<std::uint32_t, std::uint32_t>& cell, URandomWallQueue& front) const;
-}
+};

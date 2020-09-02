@@ -21,5 +21,6 @@ public:
 	 *
 	 * The first step is to generate a maze using Prim's algorithm
 	 */
-	static TArray<TArray<bool>> GenerateCave(uint16 height, uint16 width);
+	UFUNCTION(Category = "CaveGen", BlueprintCallable)
+	static TArray<bool> GenerateCave(int height, int width);
 };
